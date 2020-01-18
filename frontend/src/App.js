@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { connect, sendMsg } from "./api";
+import Header from './components/Header/Header';
 
 class App extends Component {
   constructor(props) {
@@ -15,12 +16,26 @@ class App extends Component {
   }
 
   render() {
+    
     return (
       <div className="App">
+        <ChatHistory chatHistory={this.state.chatHistory} />
         <button onClick={this.send}>Hit</button>
       </div>
     );
+
   }
+
+  componentDidMount() {
+    connect((msg) => {
+        console.log("New Message")
+        this.setState(prevState => ({
+            chatHistory: [...this.state.chatHistory, msg]
+        }))
+        console.log(this.state);
+    });
+ }
+
 }
 
 export default App;
